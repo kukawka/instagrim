@@ -25,7 +25,7 @@ public final class Keyspaces {
                     + " processed blob,"
                     + " imagelength int,"
                     + " thumblength int,"
-                    + "  processedlength int,"
+                    + " processedlength int,"
                     + " type  varchar,"
                     + " name  varchar,"
                     + " PRIMARY KEY (picid)"
@@ -34,6 +34,9 @@ public final class Keyspaces {
                     + "picid uuid,\n"
                     + "user varchar,\n"
                     + "pic_added timestamp,\n"
+                    + "isprofile boolean,\n"
+                    + "description varchar,\n"
+                    + "likes set<text>,\n"
                     + "PRIMARY KEY (user,pic_added)\n"
                     + ") WITH CLUSTERING ORDER BY (pic_added desc);";
             String CreateAddressType = "CREATE TYPE if not exists instagrim.address (\n"
@@ -43,12 +46,25 @@ public final class Keyspaces {
                     + "  );";
             String CreateUserProfile = "CREATE TABLE if not exists instagrim.userprofiles (\n"
                     + "      login text PRIMARY KEY,\n"
-                     + "     password text,\n"
+                    + "      password text,\n"
                     + "      first_name text,\n"
                     + "      last_name text,\n"
-                    + "      email set<text>,\n"
+                    + "      email text,\n"
+                    + "      bio text,\n"
                     + "      addresses  map<text, frozen <address>>\n"
                     + "  );";
+            String CreateFriendsTable = "CREATE TABLE if not exists instagrim.usersfriends ("
+                    + " user varchar,"
+                    + " friend varchar,"
+                    + "PRIMARY KEY (friend)\n"
+                    + ")";
+            String CreatePrivacyTable = "CREATE TABLE if not exists instagrim.userprivacysettings ("
+                    + " user varchar,"
+                    + " isEmailPublic boolean,"
+                    + " isSurnamePublic boolean,"
+                    + "PRIMARY KEY (user)\n"
+                    + ")";
+            
             Session session = c.connect();
             try {
                 PreparedStatement statement = session
@@ -64,7 +80,21 @@ public final class Keyspaces {
 
             //now add some column families 
             System.out.println("" + CreatePicTable);
-
+           /*
+            try {
+                SimpleStatement cqlQuery = new SimpleStatement("drop table instagrim.userprofiles");
+                session.execute(cqlQuery);
+            } catch (Exception et) {
+                System.out.println("Can't create tweet table " + et);
+            }
+           
+            try {
+                SimpleStatement cqlQuery = new SimpleStatement("drop table instagrim.userpiclist");
+                session.execute(cqlQuery);
+            } catch (Exception et) {
+                System.out.println("Can't create tweet table " + et);
+            }*/
+            
             try {
                 SimpleStatement cqlQuery = new SimpleStatement(CreatePicTable);
                 session.execute(cqlQuery);
@@ -93,11 +123,26 @@ public final class Keyspaces {
             } catch (Exception et) {
                 System.out.println("Can't create Address Profile " + et);
             }
+            
+            System.out.println("" + CreateFriendsTable);
+            try {
+                SimpleStatement cqlQuery = new SimpleStatement(CreateFriendsTable);
+                session.execute(cqlQuery);
+            } catch (Exception et) {
+                System.out.println("Can't create Friends table " + et);
+            }
+            System.out.println("" + CreatePrivacyTable);
+
+            try {
+                SimpleStatement cqlQuery = new SimpleStatement(CreatePrivacyTable);
+                session.execute(cqlQuery);
+            } catch (Exception et) {
+                System.out.println("Can't create user pic list table " + et);
+            }
             session.close();
 
         } catch (Exception et) {
             System.out.println("Other keyspace or coulm definition error" + et);
         }
-
     }
 }

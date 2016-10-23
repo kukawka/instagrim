@@ -8,39 +8,39 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Instagrim</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
 
     </head>
     <body>
-        <header>
-        <h1>InstaGrim ! </h1>
-        <h2>Your world in Black and White</h2>
-        </header>
-        <nav>
-            <ul>
-                
-                <li><a href="/Instagrim/Images/majed">Sample Images</a></li>
-            </ul>
-        </nav>
-       
-        <article>
-            <h3>Login</h3>
-            <form method="POST"  action="Login">
-                <ul>
-                    <li>User Name <input type="text" name="username"></li>
-                    <li>Password <input type="password" name="password"></li>
+                <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Instagrim</a>
+                <ul class="nav navbar-nav">
+                    <li><a href="/Instagrim">Home</a></li>
+                    <!--<li><a href="/Instagrim/Images/majed">Sample Images</a></li>-->
                 </ul>
-                <br/>
-                <input type="submit" value="Login"> 
-            </form>
+        </nav>
 
-        </article>
-        <footer>
-            <ul>
-                <li class="footer"><a href="/Instagrim">Home</a></li>
-            </ul>
-        </footer>
+    <div class="col-md-4"></div>
+    <div class="col-md-4 thumbnail" id="registration-form">
+        <h3>Instagrim</h3>
+        <form method="POST"  action="Login">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" name="username" placeholer="Username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" name="password" placeholer="Password">
+            </div>
+
+            <button type="submit" value="Login" style="width:100%;" class="btn btn-default">Log in</button>
+            <br>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
     </body>
 </html>

@@ -18,14 +18,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
+import uk.ac.dundee.computing.aec.instagrim.models.PicModel;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
 import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
+import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
+import uk.ac.dundee.computing.aec.instagrim.stores.UserDetails;
 
 /**
  *
  * @author Administrator
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
+@WebServlet(name = "Login", urlPatterns = {"/Login",
+    "/Login/*", "/Home"
+})
 public class Login extends HttpServlet {
 
     Cluster cluster=null;
@@ -44,6 +49,9 @@ public class Login extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+
+        
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -57,18 +65,38 @@ public class Login extends HttpServlet {
         HttpSession session=request.getSession();
         System.out.println("Session in servlet "+session);
         if (isValid){
+            //set user details 
+            String[] details= us.getUsersDetails(username);
+            //Set<String> likedPictures=us.getLikedPictures(username) ;
+            boolean[] privacy=us.getUsersSettings(username);
+            UserDetails ud=new UserDetails() ;
+            ud.setDetails(details, privacy) ;
+            
             LoggedIn lg= new LoggedIn();
             lg.setLogedin();
             lg.setUsername(username);
             //request.setAttribute("LoggedIn", lg);
             
+            PicModel temp=new PicModel() ;
+            temp.setCluster(cluster);
+            Pic profilePic=temp.getProfilePicForUser(username);
+            
+            session.setAttribute("ProfilePic", profilePic);
+            session.setAttribute("UserDetails", ud) ;
             session.setAttribute("LoggedIn", lg);
+            
+            //request.setAttribute("Validation", "success") ;
+            Pic latestPic=temp.getLatestPicture() ;
+            session.setAttribute("LatestPic", latestPic);
+            
             System.out.println("Session in servlet "+session);
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
+            RequestDispatcher rd=request.getRequestDispatcher("");
 	    rd.forward(request,response);
             
         }else{
-            response.sendRedirect("/Instagrim/login.jsp");
+            session.setAttribute("Login", username) ;
+            session.setAttribute("Password", password) ;
+            response.sendRedirect("/Instagrim/RetryLogin");
         }
         
     }

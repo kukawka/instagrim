@@ -8,9 +8,31 @@ and open the template in the editor.
     Author     : Administrator
 */
 
-
+/*
 nav {
     text-align: left;
     border: 2px;
     float: right;
+}*/
+body {
+    background-image: url(Pictures/collage1.jpg);
+    background-color: rgb(255,255,255) ;
+    background-position: center ;
 }
+
+.welcome-window{
+    padding-top: 0% ;
+}
+.thumbnail{
+    background-color: #87CEEB ;
+}
+.jumbotron{
+    padding-top: 2% ;
+}
+/*
+#registration-form{
+     background-color: #cccccc ;
+}
+#profile-form{
+     background-color: #cccccc ;
+}*/

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : register.jsp
-    Created on : Sep 28, 2014, 6:29:51 PM
-    Author     : Administrator
+    Document   : registrationRetry.jsp
+    Created on : Oct 15, 2016, 6:29:49 PM
+    Author     : Dagi
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,10 +16,8 @@
         <title>Instagrim</title>
         <!--<link rel="stylesheet" type="text/css" href="Styles.css" />-->
     </head>
-    <body>
+    <body onload="setUpPage()">
         <header>
-            <!--<h1>InstaGrim ! </h1>
-            <h2>Your world in Black and White</h2>-->
         </header>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -35,62 +33,66 @@
             <!--<center>
             <h3>Register as a user</h3>
             <hr>-->
+            <%String password=(String) session.getAttribute("password");
+              String username=(String) session.getAttribute("username");
+              String first_name=(String) session.getAttribute("first_name");
+              String last_name=(String) session.getAttribute("last_name");
+              String email=(String) session.getAttribute("last_name");
+              String bio=(String) session.getAttribute("bio");
+              boolean isEmailPublic=(boolean) session.getAttribute("isEmailPublic");
+              boolean isSurnamePublic=(boolean) session.getAttribute("isEmailPublic");
+            %>
             <form method="POST"  action="Register" class="form-horizontal" id="Register-form">
-                <div class="form-group">
+                <div class="form-group has-error has-feedback">
                     <label for="username" class="col-sm-2 control-label">Username:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" name="username" id="username" required>
+                        <input class="form-control" type="text" name="username" value="<%=username%>" required>
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="first_name" class="col-sm-2 control-label">Forename:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" name="first_name" id="first_name" required>
+                        <input class="form-control" type="text" name="first_name" value="<%=first_name%>" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="first_name" class="col-sm-2 control-label">Surname:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" name="last_name" id="last_name" required>
+                        <input class="form-control" type="text" name="last_name" value="<%=last_name%>" required>
                     </div>
 
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="isSurnamePublic" value="true">Allow surname in your profile
+                            <input type="checkbox" name="isSurnamePublic" value="true">Show in your profile
                         </label>
                     </div> 
                 </div>
                 <div class="form-group">
-                    <label for="email" class="col-sm-2 control-label">E-mail:</label>
+                    <label for="email" class="col-sm-2 control-label">E-mail address:</label>
                     <div class="col-sm-10">
-                        <input type="email" name="email" id="email" required>
+                        <input type="text" name="email" value="<%=email%>" required></br>
                     </div>
 
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="isEmailPublic" value="true">Allow e-mail in your profile
+                            <input type="checkbox" name="isEmailPublic" value="true">Show in your profile
                         </label>
                     </div>  
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-2 control-label">Password:</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="password" id="password" name="password" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="password" class="col-sm-2 control-label">Repeat password:</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="password" id="password2" name="password2" required>
+                        <input class="form-control" type="password" name="password" value="<%=password%>" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="bio" class="col-sm-2 control-label">About You:</label>
                     <div class="col-sm-10">
-                        <textarea type="text" name="bio" rows="3" cols="50" maxlength="100"></textarea>
+                        <textarea name="bio" rows="3" cols="50" maxlength="100"><%=bio%></textarea>
                     </div>
                 </div>
-                <button type="submit" onclick="validate()" value="Register" class="btn btn-default" style="width:100%;">Register</button>
+                <button type="submit" value="Register" class="btn btn-default" style="width:100%;">Register</button>
                 <br>
             </form>
         </div>
@@ -98,28 +100,15 @@
 
         <script>
             $("#Register-form").validate();
-            $( "#username" ).rules( "add", {
-  minlength: 4
-});
-$( "#password" ).rules( "add", {
-  minlength: 8
-});
-$( "#password2" ).rules( "add", {
-      equalTo: "#password"
-});
-$( "#first_name" ).rules( "add", {
-  minlength: 2
-});
-$( "#last_name" ).rules( "add", {
-  minlength: 2
-});
-$( "#email" ).rules( "add", {
-  minlength: 2
-});
-$( "#email" ).rules( "add", {
-  email: true
-});
-
+        </script>
+        
+        <script>
+                    function setUpPage() {
+                        alert("A user with this name already exists!");
+                        document.getElementById("isEmailPublic").checked = <%=isEmailPublic%>;
+                        document.getElementById("isSurnamePublic").checked = <%=isSurnamePublic%>;
+                        
+                    }
         </script>
 
         <footer>

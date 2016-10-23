@@ -13,16 +13,23 @@ package uk.ac.dundee.computing.aec.instagrim.stores;
 public class LoggedIn {
     boolean logedin=false;
     String Username=null;
+    //String First_name=null ;
     public void LogedIn(){
         
     }
     
-    public void setUsername(String name){
+    public void setUsername(String name){//where did that come from?????
         this.Username=name;
     }
     public String getUsername(){
         return Username;
     }
+   /* public void setFirstName(String firstname){
+        this.First_name=firstname ;
+    }
+    public String getFirstname(){
+        return First_name;
+    }*/
     public void setLogedin(){
         logedin=true;
     }
